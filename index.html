@@ -88,6 +88,36 @@
       font-weight: bold;
       color: #1a5edb;
     }
+    /* 🔽 Panel colapsable lateral */
+    #panelSeleccionadas {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    #togglePanelTab {
+      position: absolute;
+      top: 50%;
+      right: -15px;
+      transform: translateY(-50%);
+      background-color: #6c757d;
+      color: white;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 0 6px 6px 0;
+      font-size: 1.2rem;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+    #togglePanelTab:hover {
+      background-color: #495057;
+    }
+
+    /* 🔽 Columna expandida cuando el panel está oculto */
+    .expandido {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
 
   </style>
 </head>
@@ -137,34 +167,38 @@
   <hr>
   <div class="row">
     <!-- Seleccionadas -->
-    <div class="col-md-4">
+    <div id="panelSeleccionadas" class="col-md-4 position-relative">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h5>Seleccionadas</h5>
         <button class="btn btn-sm btn-outline-danger" onclick="limpiarSeleccionadas()">Quitar todas</button>
       </div>
       <ul id="selectedList" class="list-group"></ul>
-    </div>
-    <div class="col-md-8">
-  <!-- Vista -->
-    <div id="songView" style="display:none;">
-      <h4 id="songTitle"></h4>
-      <div id="songMeta" class="text-muted mb-2"></div>
-      <div class="mb-3">
-        <button class="btn btn-sm btn-outline-primary me-2" onclick="transpose(1)">Subir tono ♯</button>
-        <button class="btn btn-sm btn-outline-secondary me-2" onclick="transpose(-1)">Bajar tono ♭</button>
-        <button class="btn btn-sm btn-outline-info me-2" id="toggleColsBtn" onclick="toggleColumnas()">🧱 Dos columnas</button>
-        <button class="btn btn-sm btn-outline-warning" onclick="editarAlabanza()">✏️ Editar</button>
-      </div>
-      <div id="songContent" class="mb-4"></div>
+
+      <div id="togglePanelTab">⮜</div>
     </div>
 
-    <!-- Editor -->
-    <div id="editorView" style="display:none;">
-      <input type="text" id="editTitle" class="form-control mb-2" placeholder="Título">
-      <textarea id="editContent" class="form-control mb-2" rows="10" placeholder="[C]Eres fiel..."></textarea>
-      <button class="btn btn-success me-2" onclick="guardarAlabanza()">💾 Guardar</button>
-      <button class="btn btn-secondary" onclick="cancelarEdicion()">Cancelar</button>
-    </div>
+    <!-- Vista principal -->
+    <div id="colVista" class="col-md-8">
+      <!-- Vista -->
+      <div id="songView" style="display:none;">
+        <h4 id="songTitle"></h4>
+        <div id="songMeta" class="text-muted mb-2"></div>
+        <div class="mb-3">
+          <button class="btn btn-sm btn-outline-primary me-2" onclick="transpose(1)">Subir tono ♯</button>
+          <button class="btn btn-sm btn-outline-secondary me-2" onclick="transpose(-1)">Bajar tono ♭</button>
+          <button class="btn btn-sm btn-outline-info me-2" id="toggleColsBtn" onclick="toggleColumnas()">🧱 Dos columnas</button>
+          <button class="btn btn-sm btn-outline-warning" onclick="editarAlabanza()">✏️ Editar</button>
+        </div>
+        <div id="songContent" class="mb-4"></div>
+      </div>
+
+      <!-- Editor -->
+      <div id="editorView" style="display:none;">
+        <input type="text" id="editTitle" class="form-control mb-2" placeholder="Título">
+        <textarea id="editContent" class="form-control mb-2" rows="10" placeholder="[C]Eres fiel..."></textarea>
+        <button class="btn btn-success me-2" onclick="guardarAlabanza()">💾 Guardar</button>
+        <button class="btn btn-secondary" onclick="cancelarEdicion()">Cancelar</button>
+      </div>
     </div>
   </div>
   
@@ -514,6 +548,40 @@ function toggleColumnas() {
   const enDosColumnas = contenedor.classList.contains('dos-columnas');
   btn.textContent = enDosColumnas ? "🧱 Una columna" : "🧱 Dos columnas";
 }
+
+// --------------------------
+// Panel colapsable de seleccionadas
+// --------------------------
+const togglePanelTab = document.getElementById("togglePanelTab");
+const panelSeleccionadas = document.getElementById("panelSeleccionadas");
+const colVista = document.getElementById("colVista");
+let panelVisible = true;
+
+togglePanelTab.addEventListener("click", () => {
+  if (panelVisible) {
+    // Ocultar panel de seleccionadas
+    panelSeleccionadas.style.display = "none";
+    colVista.classList.add("expandido");
+    togglePanelTab.textContent = "⮞";
+    // Mueve la pestaña al borde izquierdo de la pantalla
+    document.body.appendChild(togglePanelTab);
+    togglePanelTab.style.left = "0";
+    togglePanelTab.style.right = "auto";
+    togglePanelTab.style.position = "fixed";
+  } else {
+    // Mostrar panel de seleccionadas
+    panelSeleccionadas.style.display = "block";
+    colVista.classList.remove("expandido");
+    togglePanelTab.textContent = "⮜";
+    // Vuelve la pestaña a su posición original
+    panelSeleccionadas.appendChild(togglePanelTab);
+    togglePanelTab.style.position = "absolute";
+    togglePanelTab.style.left = "auto";
+    togglePanelTab.style.right = "-15px";
+  }
+  panelVisible = !panelVisible;
+});
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
