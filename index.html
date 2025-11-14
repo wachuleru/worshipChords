@@ -181,6 +181,7 @@
     <div id="colVista" class="col-md-8">
       <!-- Vista -->
       <div id="songView" style="display:none;">
+        <div id="grabaciones"></div>
         <h4 id="songTitle"></h4>
         <div id="songMeta" class="text-muted mb-2"></div>
         <div class="mb-3">
@@ -195,22 +196,1892 @@
       <!-- Editor -->
       <div id="editorView" style="display:none;">
         <input type="text" id="editTitle" class="form-control mb-2" placeholder="Título">
+        <input type="text" id="idsgrabaciones" class="form-control mb-2" placeholder="Ids del archivo en Drive separados por , si son varios">
         <textarea id="editContent" class="form-control mb-2" rows="10" placeholder="[C]Eres fiel..."></textarea>
         <button class="btn btn-success me-2" onclick="guardarAlabanza()">💾 Guardar</button>
         <button class="btn btn-secondary" onclick="cancelarEdicion()">Cancelar</button>
       </div>
     </div>
   </div>
-  
-</div>
+
+
 
 <script>
-  
+  let jsonLinks=[
+  {
+    "titulo": "1- SANTO SANTO SANTO",
+    "ids": ['1iYl2gHVQnG26CPlsERmly0mjjeltE8aX']
+  },
+  {
+    "titulo": "100 - EN EL MONTE CALVARIO",
+    "ids": ['1MSSGO8jC-1InH5N9AWmf-BAo8qWoSoeF']
+  },
+  {
+    "titulo": "101- CRISTO SU PRECIOSA SANGRE",
+    "ids": ['1FIIlEVIpXOoPOxt6iB5mCKENO6wE2SzL']
+  },
+  {
+    "titulo": "102- JESUCRISTO FUE INMOLADO",
+    "ids": ['1KossxlVb59WIcmza3ie7-BdZaLoZZiJi']
+  },
+  {
+    "titulo": "104- DE TAL MANERA ME AMO",
+    "ids": ['1zRfpR1d2sv2EQLSrDtTnJnKlQduKuaGS']
+  },
+  {
+    "titulo": "105- REY DE MI VIDA",
+    "ids": ['1fW0W7VwhkTWg5m084IsxViQvODXgXNKD']
+  },
+  {
+    "titulo": "106- ESPINAS DE MI CRISTO",
+    "ids": ['1kh-U_ypcdyYCl_qUwN5_UYfEkSo4afcC']
+  },
+  {
+    "titulo": "107- MANOS CARINOSAS",
+    "ids": ['1Vz0RyEAT_sZ78geLsBbRdr2O_pmRvEpT']
+  },
+  {
+    "titulo": "108- MI BENDITO REDENTOR",
+    "ids": ['1OcGL5J0PeLcO4YrLyksY6y3wcg21YG3P']
+  },
+  {
+    "titulo": "11- BENDICE, OH ALMA A TU CREADOR",
+    "ids": ['1W7psefxPXe9RHJWzs-NSFB1UhiIfXylv']
+  },
+  {
+    "titulo": "110 - EN LA CRUZ",
+    "ids": ['12C-PcCLIx9HMqByCdcTtXQj9BIi2dFH3']
+  },
+  {
+    "titulo": "110- EN LA CRUZ",
+    "ids": ['12C-PcCLIx9HMqByCdcTtXQj9BIi2dFH3']
+  },
+  {
+    "titulo": "111- EN LA VERGONZOSA CRUZ",
+    "ids": ['1cjcMySqV9HID7YwtPp6t0BVtuESgtbSk']
+  },
+  {
+    "titulo": "112- INMENSA Y SIN IGUAL PIEDAD",
+    "ids": ['1BNcJA5vjtC3i7KfwLSJfYTrqYa6dlOjS']
+  },
+  {
+    "titulo": "116- UN DIA",
+    "ids": ['1KLq58qwRGh1dUjwoRXmveGoqhLFm3lms']
+  },
+  {
+    "titulo": "117 - HERIDO, TRISTE, A JESUS",
+    "ids": ['1HrNGPOSrOtiDeFxFBjdHj_Py_DX9B64S']
+  },
+  {
+    "titulo": "117- HERIDO, TRISTE, A JESA_S",
+    "ids": ['1HrNGPOSrOtiDeFxFBjdHj_Py_DX9B64S']
+  },
+  {
+    "titulo": "118- VISTE TU",
+    "ids": ['1VaSvlRWJdsvl9mJLmxuKg6W2tX3Lwmg6']
+  },
+  {
+    "titulo": "119- EL DIA DEL SENOR",
+    "ids": ['1xTS3Ra-x2h6UHg497c0Oaqt21R-SgDso']
+  },
+  {
+    "titulo": "12- DAD A DIOS INMORTAL ALABANZA",
+    "ids": ['1BUDFeAx574lYA3cgmgEPqk4FeLIbBlCu']
+  },
+  {
+    "titulo": "120- ALEGRES CANTEMOS CANCIONES DE LOOR",
+    "ids": ['12CA1_hJlFmNNjpbz9DYOheHkCL8JVLMO']
+  },
+  {
+    "titulo": "121- OH HERMANOS, DAD A CRISTO",
+    "ids": ['1RhfC_O89gCSYgCbhucPyJB1pfRCF75xQ']
+  },
+  {
+    "titulo": "122- JESUS VENCIO LA MUERTE",
+    "ids": ['1pPmPCQgfZlSHaLnhm2giVEU-6ODq5XSQ']
+  },
+  {
+    "titulo": "123- SE LEVANTO EL SENOR",
+    "ids": ['1RvFg1fkNFQorrpl0do4B7DpnAsHKmtxk']
+  },
+  {
+    "titulo": "124- TUYA ES LA GLORIA",
+    "ids": ['1Ptg2BM9Vo10BG7Et4IsB4iQ408cwidfw']
+  },
+  {
+    "titulo": "125- LA TUMBA LE ENCERRO",
+    "ids": ['1ZVpRaSYs1FTTQEHUtCL9A3b8N_x13NPK']
+  },
+  {
+    "titulo": "126- EL REY YA VIENE",
+    "ids": ['1oTGRdjhLsw2o-7Ug-kBOAKS3v8FJmCWC','1Vz2S4MCYzc_7sZm7gV78WAuPC5Uf4nfa']
+  },
+  {
+    "titulo": "127- VIENE OTRA VEZ",
+    "ids": ['1cygxz6dD3gh2x5vQg0KSSZgogylR-QV7']
+  },
+  {
+    "titulo": "128- CRISTIANOS TODOS, A PREPARARSE",
+    "ids": ['1wQUENFmk4_hA1r8kxe-xutW3HTwzYw1h']
+  },
+  {
+    "titulo": "129- DIA DE VICTORIA",
+    "ids": ['1G8ZoCB3eDfmjj__qJPJp9k5T3ZM_HjCj']
+  },
+  {
+    "titulo": "13- ENGRANDECIDO SEA JEHOVA",
+    "ids": ['1Ds5iwm8SVHEctwcxRuGt4AbAqSbU8hLi']
+  },
+  {
+    "titulo": "130- ¡OH DIOS, QUE MANANA!",
+    "ids": ['1dht7hvJocT_O5IRWZttOeJdg6O8Mpqw0']
+  },
+  {
+    "titulo": "132- YO SOLO ESPERO ESE DIA",
+    "ids": ['1hI42u-Eb7WP6gEWISj9PqQY61bW5MasR']
+  },
+  {
+    "titulo": "133- SANTO ESPIRITU, SE MI GUIA",
+    "ids": ['1TNmmRCohj85nDgcbRySnC2d1Ap0e1Jkc']
+  },
+  {
+    "titulo": "134- ¡SANTO ESPIRITU, LLENAME!",
+    "ids": ['1fDii2NLB07Aiffl9I_KrRR-FhupkERF4']
+  },
+  {
+    "titulo": "135- VEN, SANTO ESPIRITU",
+    "ids": ['18vjA_QG66uIqiYFkBj30r_qDuHkabSjT']
+  },
+  {
+    "titulo": "136- LLENA, OH SANTO ESPIRITU",
+    "ids": ['1S7bRmj8kNa_j4GWbPxJU5PAlsexD-EYz']
+  },
+  {
+    "titulo": "138- DIVINO ESPIRITU DE DIOS",
+    "ids": ['1HNg-iqZn1e8DP0vyqchMqO9E67La7Y8X']
+  },
+  {
+    "titulo": "139- SANTO ESPIRITU, FLUYE EN MI",
+    "ids": ['1ZB2l5k3Ao74tUQOUwU2L4JGM81pZirld']
+  },
+  {
+    "titulo": "141- DICHA GRANDE ES LA DEL HOMBRE",
+    "ids": ['19-byWNjX9_a9tAIMun3UFbnbNMe7QqS_']
+  },
+  {
+    "titulo": "142- PADRE, TU PALABRA ES",
+    "ids": ['1FT_pVAUYULgGmBClfE29J_yk5c9E6JgO']
+  },
+  {
+    "titulo": "143- BELLAS PALABRAS DE VIDA",
+    "ids": ['1edpkfsCwdAOD40suoKcdfEQJGQVmRc_l']
+  },
+  {
+    "titulo": "144- GOZO LA SANTA PALABRA AL LEER",
+    "ids": ['1x6zWTnGdruE8-7xGFKaOCOv00lQz1pBs']
+  },
+  {
+    "titulo": "146- SANTA BIBLIA PARA MI",
+    "ids": ['1ozgdNwhjRkWNW7k_FNC_TCB12VWttMpB']
+  },
+  {
+    "titulo": "148- LA ESCALERA DE JACOB",
+    "ids": ['1aJ6uUqHtHyPTwOSveQBFiHOqpwO53oJl']
+  },
+  {
+    "titulo": "149- OMNIPOTENTE PADRE DIOS",
+    "ids": ['1xY-o1AOeC1Eu9PbrCmdHffgqvcaqSMzx']
+  },
+  {
+    "titulo": "15- NUNCA, DIOS MIO",
+    "ids": ['1yn75SJMT9x73AxMMTZFGRxp6TTVkTqt3']
+  },
+  {
+    "titulo": "153- LA CREACION",
+    "ids": ['1wRNQcHXtcjYWhw53B1GFlshUG_5uw9Oi']
+  },
+  {
+    "titulo": "155- ALCEMOS NUESTRA VOZ",
+    "ids": ['1h7oMc8gOyCIH1foKZ1rFJnY6LDgaSSON']
+  },
+  {
+    "titulo": "156- SIEMPRE AMANECE",
+    "ids": ['1Z6bUtTOr2muHwyKOtGtsWFMNKiSt2vH5']
+  },
+  {
+    "titulo": "157- HAS HALLADO EN CRISTO",
+    "ids": ['11mBu3z2EcERHkUK_slYYLC6l2hUBslsD']
+  },
+  {
+    "titulo": "158- REY DE REYES",
+    "ids": ['1JiQCcVUq3vkLTktis5HX1Ph3OiBEyxTn']
+  },
+  {
+    "titulo": "159- ROCA DE LA ETERNIDAD",
+    "ids": ['1EDujEme4kkz-COXlaWeasgoz7tVwsusC']
+  },
+  {
+    "titulo": "16- ENGRANDECIDO SEA DIOS",
+    "ids": ['1oJ3j2k0P2Za1Vsemw2A6WmmorcjTvj6B']
+  },
+  {
+    "titulo": "160- A¿QUE ME PUEDE DAR PERDA_N",
+    "ids": ['1nW4nw1loWYmSAWZ6aKUV9Q0H6dA6qm03']
+  },
+  {
+    "titulo": "160- QUE ME PUEDE DAR PERDON",
+    "ids": ['1nW4nw1loWYmSAWZ6aKUV9Q0H6dA6qm03']
+  },
+  {
+    "titulo": "161- BENDITO DIOS",
+    "ids": ['1fhh1Av_iTFORTz0WeomWKgo6HMiJPYwU']
+  },
+  {
+    "titulo": "162- TODOS LOS QUE TENGAN SED",
+    "ids": ['1TXX7u-sQVmKXrAXsogsIvxylsz3_Yauh']
+  },
+  {
+    "titulo": "163- TODOS LOS QUE TENGAN SED",
+    "ids": ['17w01ka5WKXS-Zo0aHPJGYrKz1_-POPt6']
+  },
+  {
+    "titulo": "164- AMIGO HALLE",
+    "ids": ['1eWNknpUl-8gByDxyJyfIT1pVPRXHwZPt']
+  },
+  {
+    "titulo": "165- JESUS ES LA LUZ DEL MUNDO",
+    "ids": ['1F_Wt5KxCFnS9L7N9vgqgAqHvlQpqsMlM']
+  },
+  {
+    "titulo": "167- CARINOSO SALVADOR",
+    "ids": ['1ATbWPTUvirawjlAqMx21czhhbZW_WTWb']
+  },
+  {
+    "titulo": "168- SALVANTE AMOR",
+    "ids": ['1_SsyHAObPek-ShSOp5tHVMaRGJI_EIY4']
+  },
+  {
+    "titulo": "169- LEVANTADO FUE JESUS",
+    "ids": ['1766CPH04VbtdJ88AAV3dbKi4LH5p1Cys']
+  },
+  {
+    "titulo": "17 - TODOS JUNTOS TRIBUTEMOS",
+    "ids": ['1zpsd1l-aVCg30SH2ZT6Il0UxvNd5IxQ6']
+  },
+  {
+    "titulo": "17- TODOS JUNTOS TRIBUTEMOS",
+    "ids": ['1zpsd1l-aVCg30SH2ZT6Il0UxvNd5IxQ6']
+  },
+  {
+    "titulo": "170- QUIERES SER SALVO DE TODA MALDAD",
+    "ids": ['1fTYN7unmjrKhWm7rYhq5S9VoWtyJDPM8']
+  },
+  {
+    "titulo": "171- LA CRUZ SOLO ME GUIARA",
+    "ids": ['1o6Zp31SZQJfzZp0Q057iLe90mQzXqZZM']
+  },
+  {
+    "titulo": "172- MI CULPA EL LLEVO",
+    "ids": ['10ZR2XxULuTHCQKITVMKyZe-XDEBtGspW']
+  },
+  {
+    "titulo": "174- CON ALMA Y VOZ TE ALABARE",
+    "ids": ['194zDuHiHuqqdG9LMi0VJsjGDb1rlm6eE']
+  },
+  {
+    "titulo": "175- POR SU MISERICORDIA",
+    "ids": ['1hKyEf4khWP3xO_h1qcrSA6fVyshTqy_o']
+  },
+  {
+    "titulo": "176- ANOS MI ALMA EN VANIDAD VIVIO",
+    "ids": ['1DIk6RaNj_R6tu62NwT92gY-j5PhWNltj']
+  },
+  {
+    "titulo": "177- GRANDE AMOR, SUBLIME ETERNO",
+    "ids": ['1W0OdG-3ZyvAJefCCUrvWFpIsYUNkYatb']
+  },
+  {
+    "titulo": "178- VIDA ABUNDANTE",
+    "ids": ['1CdU5n9-d8fGSiwHQeQOL8kQ3aNVuvbYw']
+  },
+  {
+    "titulo": "179- AL QUE EN BUSCA DE LA LUZ",
+    "ids": ['1og44fn7d-JvpzfmX0qUXlihOgMvBKlc7']
+  },
+  {
+    "titulo": "18- CORAZONES TE OFRECEMOS",
+    "ids": ['1KlLkcOxKNpaB133TIcqsqDFjFOa0TR0D']
+  },
+  {
+    "titulo": "180- EN UNA CRUZ A CRISTO VI",
+    "ids": ['1PDscQgEciH2QnpAPJeqvo9JiyhSk9ocQ']
+  },
+  {
+    "titulo": "181- TEN MISERICORDIA DE MI",
+    "ids": ['1IHOnOkN7YPg4e50sxnTr9E7yG9GdDuJE']
+  },
+  {
+    "titulo": "182- JESUS ME INCLUYE A MI",
+    "ids": ['1Hp9yyEqutILqdE9EdDbzuwitvlnbH32o']
+  },
+  {
+    "titulo": "183- GRACIA ADMIRABLE",
+    "ids": ['1RqaJaLv-NpzHEHMBU67_bvKHdM-yOWqJ']
+  },
+  {
+    "titulo": "184- GRACIA ADMIRABLE DEL DIOS DE AMOR",
+    "ids": ['1YpB5vO4rEP-Dg4BnUtTfukV_3Pl_veY6']
+  },
+  {
+    "titulo": "185- ALABAD A JEHOVA",
+    "ids": ['1UtMEdAHrNOeEloFMfzgzw3b9ihYkhQ5D']
+  },
+  {
+    "titulo": "186- SI CREYERE PUEDE A EL VENIR",
+    "ids": ['1X0BafoU1nK9eOH1uFeqPcCWXqJqGSmGH']
+  },
+  {
+    "titulo": "187- VENGO, JESUS, A TI (A)",
+    "ids": ['118BATTn4Z9RInC8bBRL8fvxMj7XC8J-l']
+  },
+  {
+    "titulo": "188- 2 CRONICAS 7 14",
+    "ids": ['1wYUQP5nwVrhJJtpAYzec1tx3NpcuXTzM']
+  },
+  {
+    "titulo": "189- YO ESCUCHO, BUEN JESUS",
+    "ids": ['12oCzK9YWfG0DEMMf1NTHoy7L9yXGljGA']
+  },
+  {
+    "titulo": "190- SALVADOR, A TI ACUDO",
+    "ids": ['1ctHtQ8mbUCagAOeBAmA919uu8DotD2hN']
+  },
+  {
+    "titulo": "191- QUE HARAS TU CON CRISTO",
+    "ids": ['1D-Kie43vBA9_UFIvozbqxxUo1MrnNg6H']
+  },
+  {
+    "titulo": "192- SIN CRISTO NO TENGO NADA",
+    "ids": ['1krL3zi98z4rbOuZw1L8ZFJxEWXS5m2QH']
+  },
+  {
+    "titulo": "193- VEN, REINA EN MI CORAZON",
+    "ids": ['1lwjjg9YUSnItVOIhXoSiodUOENFdJYjN']
+  },
+  {
+    "titulo": "194- EL SALVADOR TE ESPERA",
+    "ids": ['19z3OyzVlzmW4mVJ5PQUJe2ixCgPpTUBV']
+  },
+  {
+    "titulo": "195- VEN, AMIGO, AL DULCE JESUS",
+    "ids": ['1-peXrqbkFiKOrRBH5COcNVmehh1GwlBB']
+  },
+  {
+    "titulo": "196- A JESUCRISTO VEN SIN TARDAR",
+    "ids": ['1UmlJssncagc6qHg_BEYFoRARONi5qYAQ']
+  },
+  {
+    "titulo": "197- VEN HOY AL SALVADOR",
+    "ids": ['1SNxPcR-DwfsOpv_6Fun5w7lmv1Ice7jk']
+  },
+  {
+    "titulo": "198- CUAN TIERNAMENTE JESUS HOY NOS LLAM",
+    "ids": ['1AILjQVjYFrW69FjG6KEUrF6B9dCjbuZ_']
+  },
+  {
+    "titulo": "199- SABES TU DE CRISTO",
+    "ids": ['1EQtNfZj7FkVMfQiaChvhoiivnzxpF_9T']
+  },
+  {
+    "titulo": "20 - ¡CUAN GRANDE ES EL!",
+    "ids": ['1llm-AH8UVnk1buXQfI3FEhb8naUmnEkR']
+  },
+  {
+    "titulo": "20- ¡CUAN GRANDE ES EL!",
+    "ids": ['1llm-AH8UVnk1buXQfI3FEhb8naUmnEkR']
+  },
+  {
+    "titulo": "200- TODO AQUEL QUE OYE",
+    "ids": ['1ai8BL7EbYKXsZThf7e0bXDqUSQUdbkkZ']
+  },
+  {
+    "titulo": "201- HAY LUGAR EN LA CRUZ",
+    "ids": ['1eKbDmHzw7Us9TRG3fZ_vNBvKmCIMPAfP']
+  },
+  {
+    "titulo": "202- VEN AL SENOR JESUS",
+    "ids": ['1e_OowP2IqlwT2jUVq7VDmDq77rMrQ1yk']
+  },
+  {
+    "titulo": "203- ALGUIEN ESTA A MI PUERTA",
+    "ids": ['14OZUunkS8Nrn6crrIXTOK4dQ3BArngD9']
+  },
+  {
+    "titulo": "204- ESCUCHA, AMIGO, AL SENOR",
+    "ids": ['1nMkYcXmI4xql9lUW6AJr195E6jykPXIh']
+  },
+  {
+    "titulo": "205 - LA BONDADOSA INVITACION",
+    "ids": ['1lznrR29u-eVT0TDaBDHaLg9SLyMACiJD']
+  },
+  {
+    "titulo": "205- LA BONDADOSA INVITACION",
+    "ids": ['1lznrR29u-eVT0TDaBDHaLg9SLyMACiJD']
+  },
+  {
+    "titulo": "206- VEN, AMIGO, A JESUS (Am)",
+    "ids": ['1CyienEENI9g9B4ZxYqgns_9J5ixORajB']
+  },
+  {
+    "titulo": "207- MI AMOR Y VIDA",
+    "ids": ['159hRvi3GL1ikN5BGXMhGWqzczeLiAWP0']
+  },
+  {
+    "titulo": "208- CON VOZ BENIGNA TE LLAMA",
+    "ids": ['1xW_jEYPh2WLUSJhiIgDJmxsMadHLu095']
+  },
+  {
+    "titulo": "209- TE SIENTES CASI RESUELTO YA",
+    "ids": ['1Dxr42teKFZIIqMUh8_x8s-_BwmEEdOPY']
+  },
+  {
+    "titulo": "21- ALABAD AL SENOR",
+    "ids": ['1r8YgFIfi3NcwyScUnv7EIuBqLkr182Lf']
+  },
+  {
+    "titulo": "210- TENDRAS QUE RENACER",
+    "ids": ['1CKCf4nPexqkfElLO4pTRHMJpUFJYp6Fi']
+  },
+  {
+    "titulo": "211- TAL COMO SOY",
+    "ids": ['11SgsOmJ7qGZaFTZFF1kF4KQjqvRQ7yh8']
+  },
+  {
+    "titulo": "212- QUE DEBO HACER",
+    "ids": ['1AVcONVD5qv00eB8ihHBiNEugDAxduCmH']
+  },
+  {
+    "titulo": "213- TU AMARAS A CRISTO",
+    "ids": ['1KYOPYmrx-LgrtE6cUy1aYBTvhPtqkojU']
+  },
+  {
+    "titulo": "214- PON TUS OJOS EN CRISTO",
+    "ids": ['1jB8e3XsW6pZr_4dF6EjWCmZ4qyJvH0O3']
+  },
+  {
+    "titulo": "215- SU YUGO ES FACIL",
+    "ids": ['1OOTF3ug43HcieTD_ZuG1kAO8O3jsPPYS']
+  },
+  {
+    "titulo": "216- ES JESUS MI AMANTE GUIA",
+    "ids": ['1_ylwUHBPHQGfHcUm1DUNUa0ofjBlQNHV']
+  },
+  {
+    "titulo": "217- CORAZONES SIEMPRE ALEGRES",
+    "ids": ['1ya7CQ4St8DIBq2dZFFXY9RtM8WrgWdnn']
+  },
+  {
+    "titulo": "218- SEGUIRE DO EL ME GUIE",
+    "ids": ['1OtgbT5MAUXhP3PLHeK-xpxCrs94AyvuM']
+  },
+  {
+    "titulo": "22- A DIOS DEMOS GLORIA",
+    "ids": ['11QJR3xOkhdyUwvEpLrOo1JUqIeP1DRCz']
+  },
+  {
+    "titulo": "220- EL QUE HABITA AL ABRIGO DE DIOS",
+    "ids": ['1ghT9zuK45LD9chjU9deXxk8_eKIK-dHP']
+  },
+  {
+    "titulo": "222- MARAVILLOSO ES",
+    "ids": ['1fxCitF9mrEmXoJyDmoBpHg5MoHkG3OJ7']
+  },
+  {
+    "titulo": "223- A SOLAS AL HUERTO YO VOY",
+    "ids": ['12C5DOJCRcLZP1wz9RUxP6PeXu7bTj1sI']
+  },
+  {
+    "titulo": "227- ME GUIA EL",
+    "ids": ['1DbIZWKHZ8uNHe6KAmUwEb1UCAIJMfSCg']
+  },
+  {
+    "titulo": "228- ME CONDUJO EL SALVADOR",
+    "ids": ['1k0FrZjZMwgWqU795hezFFfogfKFAr6gY']
+  },
+  {
+    "titulo": "229- TE CUIDARA EL SENOR",
+    "ids": ['1Zjypf3V1gWa7j5GQnjTFIUZUZ_pvNeYP']
+  },
+  {
+    "titulo": "230- GRANDE ES TU FIDELIDAD (C)",
+    "ids": ['1jQ1s4yZq3z51b0SusJLDGgSc2vFgC0kX']
+  },
+  {
+    "titulo": "230- GRANDE ES TU FIDELIDAD (Eb)",
+    "ids": ['1jQ1s4yZq3z51b0SusJLDGgSc2vFgC0kX']
+  },
+  {
+    "titulo": "231- MIS OJOS A LOS MONTES AL REDOR",
+    "ids": ['1uPwPuV_OWD6-zqmo1B9lsRbIByHnaP4W']
+  },
+  {
+    "titulo": "232- PASTOREANOS, JESUS AMANTE",
+    "ids": ['1dntYhdvDljqDWAHy3Iw6cNprSR68DjtT']
+  },
+  {
+    "titulo": "233- HIJOS DEL PADRE CELESTIAL",
+    "ids": ['14GgkbehqsYP1ErzwJptGqp7yOa5I-WTI']
+  },
+  {
+    "titulo": "236- CUANDO COMBATIDO POR LA ADVERSIDAD",
+    "ids": ['1tCGc8fFrN3K1WSFEFfvU-VeAaWa1hCJH']
+  },
+  {
+    "titulo": "237- ¡GLORIA A DIOS!",
+    "ids": ['1PSlIWRwM_bnt0N_PKxkvl0KPGFSpGoF3']
+  },
+  {
+    "titulo": "244- ORAR, TRABAJAR, TESTIFICAR",
+    "ids": ['1NCz3CRe5VFOjHuHWCx7dJgwWhr8Y5roi']
+  },
+  {
+    "titulo": "245- TESTIFICANDO EN EL BAUTISMO",
+    "ids": ['1DxvfS0D-LtAhX1YrVk9m0UmzSfyxqRI7']
+  },
+  {
+    "titulo": "247- EN LAS AGUAS DE LA MUERTE",
+    "ids": ['13NYvEw_7HmQT1J_LUU5kVTO4DeKDxQMc']
+  },
+  {
+    "titulo": "248- PAN TU ERES, OH SENOR",
+    "ids": ['1TElHi1QIsR8XITxZcSiEqNWwgb12KuOZ']
+  },
+  {
+    "titulo": "250- EN MEMORIA DE MI",
+    "ids": ['1ttdEwXfjHW9Ch_WkCSICpkaIvHnUIEla']
+  },
+  {
+    "titulo": "252- OBEDIENTE A TU MANDATO",
+    "ids": ['15c1XNIspKjdu4m8EdkTPNl7D2FLW3jhO']
+  },
+  {
+    "titulo": "253- CARA A CARA YO TE MIRO AQUI",
+    "ids": ['1cx4zF9MFCwcBa1Ub_yyl4GrhAQhtDYGC']
+  },
+  {
+    "titulo": "254- TU CENA, OH DIOS",
+    "ids": ['1mGit9S9wi4I1BaXTxSCWdX0FGPxIWvkB']
+  },
+  {
+    "titulo": "257- DESPUES DE HABER OIDO TU PALABRA",
+    "ids": ['1HhrCtlij-hOF7EIPNLC5ujiLWbX8qCB2']
+  },
+  {
+    "titulo": "258- POR LOS LAZOS DEL SANTO AMOR",
+    "ids": ['16daIUIcQd6-FSv-z6gaqtrGCavbKpMnW']
+  },
+  {
+    "titulo": "259- DULCE ESPIRITU",
+    "ids": ['1eDnQq6OmxrNuV8HZiOvNwxEcyy7siFua']
+  },
+  {
+    "titulo": "26- CASTILLO FUERTE ES NUESTRO DIOS",
+    "ids": ['1Kw7z7-jrQg8rx5jbKoDQ5L3UKyFIatR1']
+  },
+  {
+    "titulo": "260- SAGRADO ES EL AMOR",
+    "ids": ['1TLaFMw9c7Oyi2TN4GhB_aR7w80qq-WQ4']
+  },
+  {
+    "titulo": "261- UN MANDAMIENTO NUEVO",
+    "ids": ['1fTEjaGobBs0To7Tpz1UDo4yj10q4C5R8']
+  },
+  {
+    "titulo": "262- DIOS OS GUARDE EN SU SANTO AMOR",
+    "ids": ['1ADBOiq0_7Y2OA1btQ1BtOJCLb-IYfv7D']
+  },
+  {
+    "titulo": "263- MANDANOS LLUVIAS DE BENDICION",
+    "ids": ['1odAO4EUcyH5bjuTdVfZFlOFRBQfm6Uo1']
+  },
+  {
+    "titulo": "264- CERCA, MAS CERCA",
+    "ids": ['1AzwBvIgPyW3DhrYkhkaUP9BjHOMY86fg']
+  },
+  {
+    "titulo": "265- LLUVIAS DE GRACIA",
+    "ids": ['1SiCpHeft4qGq2a66ZqIMB2kuf0p9axs8']
+  },
+  {
+    "titulo": "267 - Ven, Aviva Mi Alma Con Poder",
+    "ids": ['17pEwGTAZMqnj17gxzSrQLC0U_-GP5EU7']
+  },
+  {
+    "titulo": "267- VEN, AVIVA MI ALMA CON PODER",
+    "ids": ['17pEwGTAZMqnj17gxzSrQLC0U_-GP5EU7']
+  },
+  {
+    "titulo": "268- EL FUEGO SANTO",
+    "ids": ['1SBl5cfX_0zBH0N4gNC53S_S2QsLM-qCK']
+  },
+  {
+    "titulo": "270- CORONA A NUESTRO SALVADOR",
+    "ids": ['14UulYPdT7uVb3bRwQmEMe6m4CfTzmxkE']
+  },
+  {
+    "titulo": "271- AVIVANOS, SENOR",
+    "ids": ['1Z9NU7u0a2wgq4O71yS2nfuW5I-cONWN5']
+  },
+  {
+    "titulo": "272- TU OBRA AVIVA, OH DIOS",
+    "ids": ['18gZbT83HNNdrbiE2w2kfIn64xUfjy38C']
+  },
+  {
+    "titulo": "273- VIDA NUEVA EN JESUS",
+    "ids": ['1bsDqzhCm23t1kuPdJMYHdvTyNg5ITsAw']
+  },
+  {
+    "titulo": "275- LO DEBES COMPARTIR",
+    "ids": ['1IsbXFVR9m3QN0IG5Invmr1PSPRQT7UpJ']
+  },
+  {
+    "titulo": "276- EL MUNDO ES DEL SENOR",
+    "ids": ['1NFAGDTW_5lAxfEriO7_RFVXdBKJOXs-P']
+  },
+  {
+    "titulo": "278- LAS NUEVAS DAD",
+    "ids": ['1Pn8lJrMFcl73xa31XTUcFS5wIWO7JkTf']
+  },
+  {
+    "titulo": "280- LEJOS ESTAN VIVIENDO EN EL PECADO",
+    "ids": ['1F3vG7hez0gPC2vrmZSYhQFKoLyEMTlAJ']
+  },
+  {
+    "titulo": "281- ¡OH ALZAD VUESTROS OJOS!",
+    "ids": ['14hfGQDo17yozt3jSSN8XUBrdJ4TrfdX9']
+  },
+  {
+    "titulo": "282- AMA A TUS PROJIMOS",
+    "ids": ['17GBsWTb40yy_rKr32UU2rrJLlXdtfBbN']
+  },
+  {
+    "titulo": "283- ENVIAME, SENOR",
+    "ids": ['1XLN1QcRP6YaLZSfki0Gf17MV_mH6_kqg']
+  },
+  {
+    "titulo": "286- SALGAMOS, FIELES, A ANUNCIAR",
+    "ids": ['12_1nnZBUZML2tQbkvIwlWnd0TZqgBWDT']
+  },
+  {
+    "titulo": "288- HAZ ARDER MI ALMA",
+    "ids": ['1V9X36sizPc0S5ROosTJx7GmxAZlT2qdm']
+  },
+  {
+    "titulo": "289- DE SU ALTO SOLIO CELESTIAL",
+    "ids": ['1zlEAC7GRZA8tBH6gwf_KHGtNoRzfJN7T']
+  },
+  {
+    "titulo": "29- VENID, NUESTRAS VOCES ALEGRES UNAMOS",
+    "ids": ['1rO92QdFQhp-W_K_q9I1rUM-H4uUKAE8J']
+  },
+  {
+    "titulo": "293- MIL GRACIAS POR TU ORDEN",
+    "ids": ['16uineskYVIrK6k13P4dCeJb_0xngP6DG']
+  },
+  {
+    "titulo": "294- VAMOS A SEMBRAR",
+    "ids": ['1A3r2450OBwEfuJHj6_CPQztAPyGN-mS4']
+  },
+  {
+    "titulo": "295- ASI OS MANDO YO",
+    "ids": ['18NCxhw77cXsUaqsghxnlxDhBURAd3E14']
+  },
+  {
+    "titulo": "296- SENOR, TU ME LLAMAS",
+    "ids": ['1RduwZSrUtaitskC3iKWHzYmBbbnHxsy7']
+  },
+  {
+    "titulo": "297- CRISTO ES MI CANCION",
+    "ids": ['1FuDRL3PpZBnW26q8B0Mz8YEgsfsUOt8t']
+  },
+  {
+    "titulo": "298- YO IRE DE LA TIERRA HASTA EL FIN",
+    "ids": ['1loaqbReXgUe27EUzddH3PYWQkjYsn9jj']
+  },
+  {
+    "titulo": "3- TE LOAMOS, ¡OH DIOS!",
+    "ids": ['1emKZOWobc9gKL1HEmZasBDv-7yw3b0Ai']
+  },
+  {
+    "titulo": "30- GLORIA DEMOS AL SALVADOR",
+    "ids": ['1CysKQRO136QNKQD-upv0clOObB3Rwft0']
+  },
+  {
+    "titulo": "301- POR VEREDAS EXTRAVIADAS MAL HALLE",
+    "ids": ['1Biojgm9f_Qhn9wRXd0BS6Oa-KABrrau3']
+  },
+  {
+    "titulo": "302- APRISA, ¡SION!",
+    "ids": ['1MPOmzX1Jx45-v8Ny2r4PVZdNyXZFpMl7']
+  },
+  {
+    "titulo": "304- AMOR ES",
+    "ids": ['1y9q8Qnw1kM0ULHyDtWNkP-OB2OEGoPoH']
+  },
+  {
+    "titulo": "306- TIENDE TU MANO",
+    "ids": ['1_z4ZevbkeewmA372Um-3z2zhliczvVR1']
+  },
+  {
+    "titulo": "307- MAS CERCA, OH DIOS, DE TI",
+    "ids": ['1tPbmqYU2VXowCRMKbp66u48V0kfP1IYB']
+  },
+  {
+    "titulo": "31- VED AL CRISTO, REY DE GLORIA",
+    "ids": ['1EbSxNBFzGocmaPS6Wyx8_e075j9Gfl31']
+  },
+  {
+    "titulo": "310- ME SEREIS SANTOS",
+    "ids": ['1p-uwoU_cJbD7zsfTWZiRVP2jlfI40Zix']
+  },
+  {
+    "titulo": "311- OH DIOS, MI SOBERANO REY",
+    "ids": ['1-LDXor701NWuVXrIebgmpKeCcmH4jXNO']
+  },
+  {
+    "titulo": "313- LOS QUE ESPERAN EN JEHOVA",
+    "ids": ['1LcMHS_HPAjfiJmaMOvZpcxpPIbQ4x-Pu']
+  },
+  {
+    "titulo": "314- DIOS, YO QUIERO SER CRISTIANO",
+    "ids": ['1ykLILHpgsgjm4tsdOzYkQzbaVvw63Rh3']
+  },
+  {
+    "titulo": "315- MAS DE JESUS QUIERO APRENDER",
+    "ids": ['1g1w1Msh9yOlhzTJ_bmOhpKKMVC9ci3cn']
+  },
+  {
+    "titulo": "316- DIOS DE AMOR, TE IMPLORAMOS",
+    "ids": ['15I_mfyyFKnJVtycGktl2EN00esv3wWCl']
+  },
+  {
+    "titulo": "318- QUIERO SEGUIR",
+    "ids": ['1m1459JnNLY95jNVRwLh7Zx0IZ3wczwDJ']
+  },
+  {
+    "titulo": "319- DULCE COMUNION",
+    "ids": ['1D9d8Uljl3ZcgVpEL5PxG2qbQZwl7DwLP']
+  },
+  {
+    "titulo": "320- LA PAZ, EL DON DE MI DIOS",
+    "ids": ['1TOzlxjq93qoDbQSQRtgJe-9SCy9WKlm0']
+  },
+  {
+    "titulo": "322- HABLADME MAS DE CRISTO",
+    "ids": ['1h3xVNY-L-fwtzZh96DH0Q7BOCxoM5wgv']
+  },
+  {
+    "titulo": "323- EN JESUCRISTO, EL REY DE PAZ",
+    "ids": ['1Ltnm_Y3YZ9KW0PFF7rTAwsCY9oyfx8Rv']
+  },
+  {
+    "titulo": "324- UN ETERNO Y GRANDE AMOR",
+    "ids": ['1Xjt_oDjexinuVFvlckoLyACrT8bHYysz']
+  },
+  {
+    "titulo": "325- YO SE A QUIEN HE CREIDO",
+    "ids": ['1m4qcfCujE7SOSFisF6cz8E5zsy2K24qX']
+  },
+  {
+    "titulo": "326- ESCOGIDO FUI DE DIOS",
+    "ids": ['1YX9MhRBaUvwBPwBhTjDdqVs7sqG68Zrf']
+  },
+  {
+    "titulo": "330- ALCANCE SALVACION",
+    "ids": ['1I_jY-3tZy01AVFq0mLWr4FkPRCxM_dqC']
+  },
+  {
+    "titulo": "331- TODAS LAS PROMESAS DEL SENOR",
+    "ids": ['1jWiYtbjaJQX0dfrmRD6akG5OCk5tFOam']
+  },
+  {
+    "titulo": "332- CONFIO YO EN CRISTO",
+    "ids": ['1VwzVgb2HLgAVcb8dJDjJ7IGOTLSQ5BM1']
+  },
+  {
+    "titulo": "333 - Cristo, Fiel Te Quiero Ser",
+    "ids": ['1yjf6xD_FoFjEcZrxq3XZpUrxRu1a50U_']
+  },
+  {
+    "titulo": "333- CRISTO, FIEL TE QUIERO SER",
+    "ids": ['1yjf6xD_FoFjEcZrxq3XZpUrxRu1a50U_']
+  },
+  {
+    "titulo": "334- PAZ CON DIOS BUSQUE GANARLA",
+    "ids": ['1Xgw1xOP_oPR_iKyJj6BZFQd0oevjgzvD']
+  },
+  {
+    "titulo": "335- MAS BLANCO QUE LA NIEVE",
+    "ids": ['1oM9AhXfnlFGJFWinO-q79QdYK5AGYYe2']
+  },
+  {
+    "titulo": "336- YO TE SEGUIRE",
+    "ids": ['1wa2XlXLRwzoG2dZsCiMf0GWygypkiwc6']
+  },
+  {
+    "titulo": "337- DESDE EL CIELO CRISTO LLAMA",
+    "ids": ['10gwCIJDqi1fLy5-p-rgarx0cbtL2n9iE']
+  },
+  {
+    "titulo": "339- ¡OH CRISTO!, TU AYUDA QUISIERA TENE",
+    "ids": ['1FPbUWnjeG4wt-nLESl55vITGEBgY3KTu']
+  },
+  {
+    "titulo": "34- DIGNO ES EL CORDERO",
+    "ids": ['1C54YpiicS7C1jiqfVXxI9_JfSQZfJuO9']
+  },
+  {
+    "titulo": "340- SALVADOR, A TI ME ENTREGO",
+    "ids": ['1Y99w9Nxh2-QgQ-5b4DYQ3dqHxjnqhPjg']
+  },
+  {
+    "titulo": "341- TU CRUZ LEVANTA Y VEN TRAS MI",
+    "ids": ['1JsAcgBEINAMd1DTbn_uqf367mp2oOFM5']
+  },
+  {
+    "titulo": "342- JESUS, YO HE PROMETIDO",
+    "ids": ['1i-WHs4rrhnZkVJ5gq0OG2jaxUCJX8sSK']
+  },
+  {
+    "titulo": "343- JESUS, DEL HOMBRE HIJO",
+    "ids": ['1v7Oiq8VfZrhkorYkA4MJCcjpll_5jdha']
+  },
+  {
+    "titulo": "344- SU VOLUNTAD DA GOZO",
+    "ids": ['16CI9Hofpf_H7jSZfEAG5B0OGhVjaQPR7']
+  },
+  {
+    "titulo": "345- PUEDO OIR TU VOZ",
+    "ids": ['1SfAeJ2SkGrXyH4IHwAsuQNwdWOVjRRwH']
+  },
+  {
+    "titulo": "346- CRISTO DE TODO ES REY",
+    "ids": ['1B-544K0dtEetTK_ftq3eWqI1Bb4ME4nB']
+  },
+  {
+    "titulo": "347- TUYO SOY, JESUS",
+    "ids": ['1qbv2lbymrD_mLvRyLlDoAeQ1M8BHN8Dj']
+  },
+  {
+    "titulo": "348- CONSAGRAOS, OH CRISTIANOS",
+    "ids": ['1wQk4PoWmfNwcSU7x8IA5gSItVBp7487j']
+  },
+  {
+    "titulo": "349- HEME AQUI, OH SENOR",
+    "ids": ['10htHK432ym-Ri9HNyyg695jitq8aettj']
+  },
+  {
+    "titulo": "35- FUENTE DE LA VIDA ETERNA",
+    "ids": ['16zwSaq0tHKbmcuKMNv-ro9n6l6bMKDlZ']
+  },
+  {
+    "titulo": "350- TUYO SOY",
+    "ids": ['1bGegVXOGKRf2daZ3tNmogWSPlBvTADfZ']
+  },
+  {
+    "titulo": "351- CUANTOS PUEDEN",
+    "ids": ['1AClzWYrAJaFtr3Aw9EBH5akbSX048Rhc']
+  },
+  {
+    "titulo": "352- YO SOY PEREGRINO",
+    "ids": ['1F3qAv7FAEAnQISnu_8O0P4qmNSgXEZBn']
+  },
+  {
+    "titulo": "353- CONTIGO, CRISTO, QUIERO ANDAR",
+    "ids": ['11UjTunJgyED7pvrIdhEoWUBKWX-FLi9m']
+  },
+  {
+    "titulo": "354- ¡TENGO UN AMIGO!",
+    "ids": ['198h5IEIgcuAqmH-577uHlMLRUXK4VCaE']
+  },
+  {
+    "titulo": "355- ¡OH! AMOR QUE NO ME DEJARA",
+    "ids": ['1l3_R6fj7QwkGGOznwtWmte-YY4Pu4_VK']
+  },
+  {
+    "titulo": "356- LEJOS DE MI PADRE DIOS",
+    "ids": ['1ag52m4S1ZX5uzBohd2lp-r4w4UR03LLA']
+  },
+  {
+    "titulo": "357- ABRE MIS OJOS A LA LUZ",
+    "ids": ['1ZDj-uC1FwSIZGgsTCltxBQ0fjpu_E-j9']
+  },
+  {
+    "titulo": "358- VIVO POR CRISTO",
+    "ids": ['1-17qInqHLFnbm4ObezBzLM6hP3i3ecvq']
+  },
+  {
+    "titulo": "359- HAZ LO QUE QUIERAS",
+    "ids": ['1ZSObC_Egix_UaXm5DyX00g-VvTIVk1Ad']
+  },
+  {
+    "titulo": "360- TU MUNDO HOY",
+    "ids": ['1QFoEc2o9TNsJktqd9hG65DjD7IKK4-CU']
+  },
+  {
+    "titulo": "361- OH, SENOR, RECIBEME CUAL SOY",
+    "ids": ['1D0oJUYj1nNcLqB0bJ7LGD_FZgjEFZgan']
+  },
+  {
+    "titulo": "362- ANHELO TRABAJAR POR EL SENOR",
+    "ids": ['1Pa1SKAaKYiuAKJB6MN0MLpwsE6dWCfVE']
+  },
+  {
+    "titulo": "364- DiA EN DiA",
+    "ids": ['1Grt3hmZgtzvYPyioE_QAYoYlysKUA-D_']
+  },
+  {
+    "titulo": "365- QUE MI VIDA ENTERA ESTE",
+    "ids": ['1Kd4qjHIputuB-AOs5tIZnaUT2HTX_c67']
+  },
+  {
+    "titulo": "366- TEN FE EN DIOS",
+    "ids": ['1_WMPVshZK8q2dvAy_20zLkMzKmw_RvI8']
+  },
+  {
+    "titulo": "368- CRISTO ME AYUDA POR EL A VIVIR",
+    "ids": ['1YFSFeTGEpQX6z14kW5uYJorDcRuX10n4']
+  },
+  {
+    "titulo": "369- VEN, ALMA QUE LLORAS",
+    "ids": ['14_6pEPdx7ejhMembCOk52kTy3AzqC_8Q']
+  },
+  {
+    "titulo": "370- CORAZONES SIEMPRE ALEGRES",
+    "ids": ['1z6pPrCRxJcXGLnMa27a9mCWiFV5rn-R7']
+  },
+  {
+    "titulo": "371- CUAN FIRME CIMIENTO",
+    "ids": ['1dKGiZOOGCoYgtrKfzxLcqwI6Lyd6IxNp']
+  },
+  {
+    "titulo": "372- LA MANO DEL SALVADOR",
+    "ids": ['1VHzPvzCIV86nyX3MnCiQbpaeXBRulaIN']
+  },
+  {
+    "titulo": "373- BUSCAD PRIMERO",
+    "ids": ['1fx3J7i_RPopS9cd9vOsqdeo1BfznunJC']
+  },
+  {
+    "titulo": "374- MI DIOS REI MANDO ESTA",
+    "ids": ['1f5Xcgc-jxYuXqcDbCICtWAiPmdMOZRpd']
+  },
+  {
+    "titulo": "376- DEL AMOR DIVINO",
+    "ids": ['1478pfCpL9L-znQfqzpRLCaP99JJf3UEj']
+  },
+  {
+    "titulo": "377- ¡OH CUAN DULCE ES FIAR EN CRISTO!",
+    "ids": ['1IgR0WFH80Kx4_HvvBVHR7-m-Pz_HMU4L']
+  },
+  {
+    "titulo": "378- REDIMIDO POR CRISTO",
+    "ids": ['1NnChHdagwoyA_2Ub4-5m1DK9iWADOoqK']
+  },
+  {
+    "titulo": "38- ¡GLORIA! ¡GLORIA!",
+    "ids": ['1QKHKcJWreQR8E8pDmYYOk1lDTtTzwGc-']
+  },
+  {
+    "titulo": "380- MI FE DESCANSA EN BUEN LUGAR",
+    "ids": ['1fms_HA2jEgHgrCWr41Mn1yPPhMXo3zkR']
+  },
+  {
+    "titulo": "381- TE NECESITO YA",
+    "ids": ['1Pj0uSLCFGW2PN5Z8RYUHS1m3sh95-7-Q']
+  },
+  {
+    "titulo": "382- FE LA VICTORIA ES",
+    "ids": ['1Ck1XdWVQTokQ_bbenCC5m9oy6mGEJ5k2']
+  },
+  {
+    "titulo": "386- QUE MI VIDA ENTERA ESTE",
+    "ids": ['1MWIHl7_JfIqXx2CrmDrxuB_pVbq7ucB0']
+  },
+  {
+    "titulo": "387- VIENEN A MI",
+    "ids": ['1ban1tGbraBKDH9OzPrdQvWadYG6MC9Zo']
+  },
+  {
+    "titulo": "388- NO TENGO TEMOR",
+    "ids": ['1QMrZWUS2QvfgGV2jIuUcL6tZPVV1pN8z']
+  },
+  {
+    "titulo": "389- OBJETO DE MI FE",
+    "ids": ['1NIW1Bthck1oSKryZb6xtN3r-D2Pm7Lyc']
+  },
+  {
+    "titulo": "390- HABLA, JESUS, A MI ALMA",
+    "ids": ['1ex8GgQVSwmPA-8eRMQ95IIPQgvJRnr1Q']
+  },
+  {
+    "titulo": "392- A JESUS PREFIERO",
+    "ids": ['1Wxo5xfDNCPFsEvTmCvJRlDUwt-ROwsaK']
+  },
+  {
+    "titulo": "394- SOY YO SOLDADO DE JESUS",
+    "ids": ['1Y4gXQcgg9pkoYX6oQ6mZ8R3d6GmfwyaG']
+  },
+  {
+    "titulo": "395- NO TE DE TEMOR HABLAR POR CRISTO",
+    "ids": ['1ll6LCRFhGanik-VNql_30Uvfc-rGXG_S']
+  },
+  {
+    "titulo": "396- SI FUI MOTIVO DE DOLOR",
+    "ids": ['1V_uKjjD-BKAoIW6xQztgYGYoxx6WaA3W']
+  },
+  {
+    "titulo": "397- FIRMES Y ADELANTE (D)",
+    "ids": ['1F4-1jdPSHtwHcBQoqnFSWdGJOFVwR4TS']
+  },
+  {
+    "titulo": "399- EN LOS NEGOCIOS DEL REY",
+    "ids": ['1mwRYtxkVfFJYvD5AXKduYugiwbpmonHq']
+  },
+  {
+    "titulo": "4- A DIOS EL PADRE CELESTIAL",
+    "ids": ['1LhYV5Tf8NsjrmA9fnYCHeAGzUuFlGQqe']
+  },
+  {
+    "titulo": "40- TE AMO",
+    "ids": ['1jFcYtQXlPiY0RHtWZkIRA9LMpF-Y2tw5']
+  },
+  {
+    "titulo": "400- TU VIDA, ¡OH SALVADOR!",
+    "ids": ['1qCHdyakW_1IVumV1bKnLAAGHBATee-1Q']
+  },
+  {
+    "titulo": "401- ESTAD POR CRISTO FIRMES",
+    "ids": ['1Lwlf0F8vSTpUnncHeeQEpvvAGDAwsx15']
+  },
+  {
+    "titulo": "402- ¡OH DIOS DE AMOR PERFECTO!",
+    "ids": ['1SP4XO5sKVdYZUeKic5m5mG2-z8EJKqQm']
+  },
+  {
+    "titulo": "403- PADRE AMOROSO, PRESIDE LA BODA",
+    "ids": ['1-Tu1kLF6V7nmBfO9ta5nSOWsXGKjywxO']
+  },
+  {
+    "titulo": "404- HOGAR FELIZ, DONDE EL SENOR RESIDE",
+    "ids": ['1u9fnoYvvIfU_asjfdJvbHVexbJagtYWu']
+  },
+  {
+    "titulo": "405- DANOS UN BELLO HOGAR",
+    "ids": ['16bJ_Rua8-lKItQs0cVXaqCFb4zoHnauM']
+  },
+  {
+    "titulo": "407- TU, QUE A LA MUJER HONRASTE",
+    "ids": ['1yqzZj0qPX3clsgRp0QTNmFuH11Yf_17k']
+  },
+  {
+    "titulo": "408- LOOR POR LAS MADRES",
+    "ids": ['1lSrg8rihNCRwUBirRJYsoD-_ob6cxOQd']
+  },
+  {
+    "titulo": "409- ¡OH QUE AMIGO NOS ES CRISTO!",
+    "ids": ['14Eascs4uWFAX6oXs-UiYhGnF9BZvwxD6']
+  },
+  {
+    "titulo": "41- ME AGRADA CANTAR",
+    "ids": ['1xu9GUF4k-jN63i52t49-SjK4oCoSoU0x']
+  },
+  {
+    "titulo": "410- DEBES ORAR",
+    "ids": ['1cTfwlj6lkd4QfqH2ddct3Z6Kp8ZTwQGH']
+  },
+  {
+    "titulo": "411- EN EL HUERTO DE ORACION",
+    "ids": ['1Sf6N9g6CK9792QX_rtfYTpcXjp6JxevC']
+  },
+  {
+    "titulo": "412- GETSEMANI",
+    "ids": ['1OnF4bDg112Enj1iEmTneOBk0u5xqd1j8']
+  },
+  {
+    "titulo": "413- ¡OH DULCE, GRATA ORACION!",
+    "ids": ['14cnFxd7go445dqeYhdLLTtMd9LXW7Qgo']
+  },
+  {
+    "titulo": "414- ¡PIEDAD, OH SANTO DIOS!",
+    "ids": ['1Y2wUsZVoFdqDT7EuFA22-qPeyA1xnbd4']
+  },
+  {
+    "titulo": "418- DILO A CRISTO",
+    "ids": ['1Cq2l12uogIR3QsyY_2Rmpx4_ITLIVa0S']
+  },
+  {
+    "titulo": "419- SOY FELIZ EN EL SERVICIO DEL SENOR",
+    "ids": ['1Xv2xNvXzThiDWucIi2LB1KDMqJgwz6Kk']
+  },
+  {
+    "titulo": "420- MAS SANTIDAD DAME",
+    "ids": ['1Adi8WOF_3jWON0uqGPpjuTKjOEoBckIg']
+  },
+  {
+    "titulo": "421- YO TE SIRVO",
+    "ids": ['1pqbkywIEXYgC0Q9aCpCAByJfWoAWAUHt']
+  },
+  {
+    "titulo": "422- PARA ANDAR CON JESUS",
+    "ids": ['1vBTJo2qCeGzgP5wqWs0Fp4u9etaNl7oQ']
+  },
+  {
+    "titulo": "423- PRONTO LA NOCHE VIENE",
+    "ids": ['1MIXdRKGa_2_0FdNcFCuxIJQqW5-Gg_co']
+  },
+  {
+    "titulo": "424- A TI, SENOR, NUESTRA CANCION",
+    "ids": ['19Y89bJdm88KKT40grKT1Vd5-94x9iSen']
+  },
+  {
+    "titulo": "425- VEN Y DA TUS DIEZMOS",
+    "ids": ['1QCSJW7GZSM58lb9qdEOAVtCEcWLc_iuV']
+  },
+  {
+    "titulo": "426- JUNTOS MARCHAMOS",
+    "ids": ['13HYhAIMVEiEAAMg4BhGyIojAAmpdIhau']
+  },
+  {
+    "titulo": "427 - MI VIDA DI POR TI",
+    "ids": ['1szx-6xbLhDiTizC3ad7M-t0epoL8vzKF']
+  },
+  {
+    "titulo": "428- FIEL MAYORDOMO SERE",
+    "ids": ['1g3n50zS9HgujmKAcZFxGzFsx6rbar2WK']
+  },
+  {
+    "titulo": "429- ¡CUAN GRANDE AMOR!",
+    "ids": ['1Z_o-s0Aas5Y36DPNNdGCVX8iDfIbpGYD']
+  },
+  {
+    "titulo": "43- DE QUIEN PAGO MI REDENCION",
+    "ids": ['1AAjlSF9CmhLGmw_s8YdNzonje_PX99dE']
+  },
+  {
+    "titulo": "430- DULCES MELODIAS CANTARE",
+    "ids": ['15coZZoSPaP_vTisuXTLFvTbzbIwU0_K4']
+  },
+  {
+    "titulo": "431- TODAS TUS ANSIAS Y PESAR",
+    "ids": ['1I3P_DzJYaw0gAuoxuhswWbZpcci5uJL6']
+  },
+  {
+    "titulo": "432- FUE SENTADO A LOS PIES DE CRISTO",
+    "ids": ['1U3o2u3SxC89Nv2KucHcN0yqUEFfZub24']
+  },
+  {
+    "titulo": "433- HOY, AYER Y POR LOS SIGLOS",
+    "ids": ['1SlKGxUiN4-S416EiH9U2mMwTTucjumFK']
+  },
+  {
+    "titulo": "434- LA GLORIA DE CRISTO",
+    "ids": ['1xrbvnT12XEGDqS1sDfjwzHGdL4tSQ8jG']
+  },
+  {
+    "titulo": "435- ALELUYA",
+    "ids": ['1y5ysHu15iBXwdbAT1EPSKcH-_cfwmxLf']
+  },
+  {
+    "titulo": "436- YO TENGO UN HIMNO QUE ENTONAR",
+    "ids": ['1V5UZRfbFjomJER2zIhBMJgJQy3fv-Fmb']
+  },
+  {
+    "titulo": "437- AMOR, AMOR",
+    "ids": ['1ehsrw9PMVRj21RCcSK4hpFRum9ZWH3P8']
+  },
+  {
+    "titulo": "438- EL PLACER DE MI ALMA",
+    "ids": ['1fEopsZlU4TF6kTA-TB7SRSdZ8bdF_Eoj']
+  },
+  {
+    "titulo": "439- QUE LINDO ES CANTAR",
+    "ids": ['1PFctuH-9H1z3v-cEFZj7fEMIMWAs1jSs']
+  },
+  {
+    "titulo": "440- EL CRISTO DE NAZARET",
+    "ids": ['1xUkn2BqCf9cvcN4lz6EunYPhrPX7VR9H']
+  },
+  {
+    "titulo": "441- GOZO, PAZ Y AMOR",
+    "ids": ['1tgqZE66AXn-wtdqI15jUqGlmN2nOZVfV']
+  },
+  {
+    "titulo": "442- DIA FELIZ",
+    "ids": ['1zx84_557ng-OVldc07Wh1UFaXn5h4RY9']
+  },
+  {
+    "titulo": "443- SENTIR MAS GRANDE AMOR",
+    "ids": ['1mDfhk6aR2q74m0tAgJjn1nvOmeYHvQQT']
+  },
+  {
+    "titulo": "444- COMPRADO POR SANGRE DE CRISTO",
+    "ids": ['1iWuCC1shWiXBesywT_o9tahIseqkmFM9']
+  },
+  {
+    "titulo": "445- HAY UN CANTO ALEGRE",
+    "ids": ['1XzsRN1_sVeBPFvznkTqeMKfJ2tIjPKnj']
+  },
+  {
+    "titulo": "446- CRISTO EN TODO ES SENOR",
+    "ids": ['1QBxIK_-tKoNO-v7iAYfofhKm5Q1xIXaW']
+  },
+  {
+    "titulo": "447- DE JESUS EL NOMBRE GUARDA",
+    "ids": ['1bUHLjAmFZRQmQSD2P5k-gM4lgCn7yOkY']
+  },
+  {
+    "titulo": "448- DIOS ES AMOR",
+    "ids": ['1YqM_TuKUxSvvtFNhPIclQflV6-eHbZ54']
+  },
+  {
+    "titulo": "449- JUNTO A TI, MI BUEN SENOR",
+    "ids": ['1EVGF6DW5N_JztqBt7SEY6fVHqkhQVpVu']
+  },
+  {
+    "titulo": "450- DIOS TE AMA",
+    "ids": ['1jStEpneHxzzPVfd6sXQ5nciQQ5Lzl8uf']
+  },
+  {
+    "titulo": "461- ES TODO PARA MI",
+    "ids": ['1k5kKsYNGYM69auDT-OGh1xJRV8iqA_ZP']
+  },
+  {
+    "titulo": "462- CANTEN CON ALEGRIA",
+    "ids": ['1Z6h87T5uLgVMPBuJ0b19f5UasZtGIxyv']
+  },
+  {
+    "titulo": "463- SABES POR QUE CANTO A CRISTO",
+    "ids": ['1sRMuvrl4diHewm4NGg5hc1M31AZ5iTtK']
+  },
+  {
+    "titulo": "464- GRATO ES CONTAR LA HISTORIA",
+    "ids": ['1BPco05n38Iw6wZOL08WjmH-t8fHSAL2d']
+  },
+  {
+    "titulo": "465- GRANDE GOZO HAY EN MI ALMA HOY",
+    "ids": ['1oClFoNccZnb6eTVe16KhLQwkDHwsxfNe']
+  },
+  {
+    "titulo": "466 -VICTORIA EN CRISTO",
+    "ids": ['1ZyhkB5LU_Cvh0dR-kK4AhyaIL4q4CNGB']
+  },
+  {
+    "titulo": "466- VICTORIA EN CRISTO (E)",
+    "ids": ['1ZyhkB5LU_Cvh0dR-kK4AhyaIL4q4CNGB']
+  },
+  {
+    "titulo": "467- VEN A CRISTO, VEN AHORA",
+    "ids": ['1o6qBYMFmSRJKHWlg8pV1BRQoZgj09kly']
+  },
+  {
+    "titulo": "468- HALLE UN BUEN AMIGO",
+    "ids": ['1PCWCO_U8UXhIzAMQS_UF1ubDlr_u0qkE']
+  },
+  {
+    "titulo": "469- QUE SALVADOR ES MI CRISTO JESUS!",
+    "ids": ['1j8rp8D_QhhjO_7nQTD58x9KIWch421ge']
+  },
+  {
+    "titulo": "47 - JESUS ES MI REY SOBERANO",
+    "ids": ['1FR4d7wwwo58RdMedt-5NH6Yzqc9ikeGr']
+  },
+  {
+    "titulo": "47- JESUS ES MI REY SOBERANO",
+    "ids": ['1FR4d7wwwo58RdMedt-5NH6Yzqc9ikeGr']
+  },
+  {
+    "titulo": "470- INVITACION DE DULCE AMOR",
+    "ids": ['1lv-MNIPXyOSDxyHhsRsmB5_lHZNSyusS']
+  },
+  {
+    "titulo": "522- USA MI VIDA",
+    "ids": ['1q6itTGiebDY2NhNOrl4gL7sF9CricRDi']
+  },
+  {
+    "titulo": "523- DIOS TE BENDIGA",
+    "ids": ['184SDHuFskXzy6qGZXRTHIk9saceFa_pu']
+  },
+  {
+    "titulo": "524- DA LO MEJOR AL MAESTRO",
+    "ids": ['1LUgTiCXAKWo-1xySDPVmsbyU3O0vbGtp']
+  },
+  {
+    "titulo": "525- 1 JUAN 1 7",
+    "ids": ['1NqJ2Zs7U1kGwSPN9GOTx-7sbYQ0O3J6e']
+  },
+  {
+    "titulo": "54- OH VEN, EMANUEL",
+    "ids": ['1P_rMnvmt37v7dzc0sFJZdu340099W_SA']
+  },
+  {
+    "titulo": "56- VEN, JESUS MUY ESPERADO",
+    "ids": ['1rJKdrn6AX2t3UwT8cLIH-cbRq9m59_Gz']
+  },
+  {
+    "titulo": "57- EN BELEN NACIO JESUS",
+    "ids": ['1XOT4zAXwdeJk4uGDMXNeWi_UMos1JCE1']
+  },
+  {
+    "titulo": "58- NOCHE DE PAZ",
+    "ids": ['1ivI7MMVUpy0vfWWej5cdF8KMsw9kw7yz']
+  },
+  {
+    "titulo": "59- EN LA NOCHE LOS PASTORES VELAN",
+    "ids": ['1kjdsq5-5__4z5afcWBtWyl-Nbn_wwC3f']
+  },
+  {
+    "titulo": "6- QUE TODO EL MUNDO CANTE AL SENOR",
+    "ids": ['1VATpvFvo6fQ-rGBSTcecj08YMfrwocAD']
+  },
+  {
+    "titulo": "60- TU DEJASTE TU TRONO Y CORONA POR MI",
+    "ids": ['1ppNJ2BVM40cjVumH8CxjxhaKVe6FQGbB']
+  },
+  {
+    "titulo": "62- HOY LA NUEVA DAD",
+    "ids": ['1o7iaqbO7-8j1XgIn4AW70dOlGCCmMVDP']
+  },
+  {
+    "titulo": "63- VENID, PASTORES",
+    "ids": ['1oAmUupZP6_5EOFgCGk2anVB8rxyUQOPc']
+  },
+  {
+    "titulo": "64- SE OYE UN SON EN ALTA ESFERA",
+    "ids": ['1HdyHevQ6zmFb9RKud6RCcM6xGm31-HkK']
+  },
+  {
+    "titulo": "65- EN UN PESEBRE YACE UN NINITO",
+    "ids": ['1oClEgqSM3G1ciuk1blpk8PSPL2knrFY0']
+  },
+  {
+    "titulo": "67- ANGELES CANTANDO ESTAN",
+    "ids": ['1mj83X0W8nTc23Ta79-g5huiUWJOUrC9f']
+  },
+  {
+    "titulo": "68- A MEDIA NOCHE RESONO",
+    "ids": ['1Ep9nLAFy6avbCHf_2C2YjUPCUu2GGFTj']
+  },
+  {
+    "titulo": "69- ANGELES DE ALTA GLORIA",
+    "ids": ['1ozFBxhlz40x2NOoihOGIGI2JDQuqzpW9']
+  },
+  {
+    "titulo": "70- VENID, PASTORCITOS",
+    "ids": ['1t1MIn438at8zCI01wtB5CURpEM1gDlOt']
+  },
+  {
+    "titulo": "71- CANTAN ANGELES MIL",
+    "ids": ['1HD4vc8DeOuM3sudovopAbolBshkXpxba']
+  },
+  {
+    "titulo": "72- VENID, FIELES TODOS",
+    "ids": ['1_8GKo1ahGkWzNV85sELRNGBHqsAzm_MU']
+  },
+  {
+    "titulo": "73- VE, DILO EN LAS MONTANAS",
+    "ids": ['1jO2zpXBvwxajAQdi1nDATiUb7QqsIfOB']
+  },
+  {
+    "titulo": "74- ¡OH ALDEHUELA DE BELEN!",
+    "ids": ['1mliWPRG7SBZrB3ryxCVKWX7R--yIdDkP']
+  },
+  {
+    "titulo": "76- ¡AL MUNDO PAZ, NACIO JESUS!",
+    "ids": ['1GMofqtD1WmgJhEA1T3LdZiWZAG4WHD49']
+  },
+  {
+    "titulo": "77- VILLANCICO DE LA ESTRELLA",
+    "ids": ['1cmi7cMh4iPISZZQigjC4ryAWb11SRg8e']
+  },
+  {
+    "titulo": "79- NINO SANTO, SUFRES TANTO",
+    "ids": ['1lbVfQ2stZI3b8isu2MrHVwAVDvXhe9N6']
+  },
+  {
+    "titulo": "80- VENID A BELEN",
+    "ids": ['1m11AziueaEIBlL6ZacrFIWhrZ3ogSfMh']
+  },
+  {
+    "titulo": "81- VENID, PASTORCILLOS",
+    "ids": ['1712YMdRXt5eEG90AlzsAriabnwjpdgCg']
+  },
+  {
+    "titulo": "82- JESUCRISTO HOY NACIO",
+    "ids": ['1nNDefUG1OzQl8edWntPUIbzC5U1aKaCM']
+  },
+  {
+    "titulo": "83- QUE NINO ES ESTE",
+    "ids": ['11F8Lu7WE2tr3D0NlBPGlP5S5Dudk1R2l']
+  },
+  {
+    "titulo": "84- ¡OH SANTISIMO, FELICISIMO!",
+    "ids": ['1iWnFRdypOy7hxn4gTBXCCoNhD-VbW0HT']
+  },
+  {
+    "titulo": "85- ALLA EN EL PESEBRE",
+    "ids": ['10U8Z1XtxrFuM3oRaUsOsl_1OvPiuSK_p']
+  },
+  {
+    "titulo": "86- SUENEN DULCES HIMNOS",
+    "ids": ['1NGZbUTlzdD1hlNRlMA4k2Mxe_Dxomb6c']
+  },
+  {
+    "titulo": "87- DAD LOOR A DIOS",
+    "ids": ['1liNiYuioMfUVakLC0C85GFP8URQBrkdE']
+  },
+  {
+    "titulo": "89- CUANDO OIGO LA HISTORIA DE JESUS",
+    "ids": ['17wCfmmxBkNG6Ov5o-MPTELnFgWjhY0wc']
+  },
+  {
+    "titulo": "9- SENOR ,QUIEN ENTRARA",
+    "ids": ['13ferJ3AeyaepW9fnjhMepQDfG7-_yw5O']
+  },
+  {
+    "titulo": "90- DEL SANTO AMOR DE CRISTO",
+    "ids": ['1WXUDfzqcFqjS6Ydt1fUtRy0FJPbb6E01']
+  },
+  {
+    "titulo": "91- ¡OH MAESTRO Y MI SENOR!",
+    "ids": ['1NnO5_JqfnB61btUW77PUcYH1nkiUsZuA']
+  },
+  {
+    "titulo": "92- HIJO DE DIOS ES EL",
+    "ids": ['1JZv3hqFmFsA1ZFC9VDfjeoZMAc0Rw2dr']
+  },
+  {
+    "titulo": "93- LA TIERNA VOZ DEL SALVADOR",
+    "ids": ['193fBPMPeK2_aKZ5D9nYCvv95LsJqv8aQ']
+  },
+  {
+    "titulo": "94- TIERRA DE LA PALESTINA",
+    "ids": ['1yF3rsCsGVGMwdwp-CJCPqVXpjczlH77y']
+  },
+  {
+    "titulo": "95- CONTEMPLANDO TU AMOR",
+    "ids": ['1KB77JvQHN4B7rFsHu7aX64th0REsBdmm']
+  },
+  {
+    "titulo": "96- EL PADRE NUESTRO",
+    "ids": ['1fjgHeLqTZbMBMLS3_4C5YJYkElhsS7LP']
+  },
+  {
+    "titulo": "98- HAY UNA FUENTE SIN IGUAL",
+    "ids": ['14bS4iVJSLbOwEVh_q8wDXXx-h7ZAW8oc']
+  },
+  {
+    "titulo": "99- EN EL CALVARIO ESTUVE YO",
+    "ids": ['1A2q6OU7-v2zVPUEk9SI7WlrldwcwYMC4']
+  },
+  {
+    "titulo": "A quien ire (A)",
+    "ids": ['19eIXmc1xaa9xO4HjOdYoddRvS4Zh7RV2']
+  },
+  {
+    "titulo": "A quien ire (C)",
+    "ids": ['19eIXmc1xaa9xO4HjOdYoddRvS4Zh7RV2']
+  },
+  {
+    "titulo": "A ti atribuimos la gloria",
+    "ids": ['1RmG9AFTP7t9s5hbZrjFEemSQFmsxNoHE']
+  },
+  {
+    "titulo": "A ti sea la gloria (no existen mas motivos)(C)",
+    "ids": ['1s7jCtfT0o6BXQuUHc-OoERdNvtJSDD21']
+  },
+  {
+    "titulo": "A ti sea la gloria (no existen mas motivos)",
+    "ids": ['1s7jCtfT0o6BXQuUHc-OoERdNvtJSDD21']
+  },
+  {
+    "titulo": "A Ti Sea La Gloria",
+    "ids": ['1s7jCtfT0o6BXQuUHc-OoERdNvtJSDD21']
+  },
+  {
+    "titulo": "Al Que Es Digno",
+    "ids": ['1ceFmmsSq-16CLiLY8j7fM28iYXXbU1Cf']
+  },
+  {
+    "titulo": "Al que me cine de poder",
+    "ids": ['1UprQHUY4hwY_7K0QcDgyHzvgitqZpYUI']
+  },
+  {
+    "titulo": "Alabare al Senor",
+    "ids": ['1YaTHYntdI-BWwmAl_sLYNYoYeGlvOH2e','1JTb-rn6jM5BFKCdm45GVpmaCz7-eOBw8']
+  },
+  {
+    "titulo": "Alza tus ojos y mira (Am)",
+    "ids": ['1L2u7uG7d9zAAB_OqvZ_-rTh1aBXLJF_n']
+  },
+  {
+    "titulo": "Alza tus ojos y mira (Em)",
+    "ids": ['1L2u7uG7d9zAAB_OqvZ_-rTh1aBXLJF_n']
+  },
+  {
+    "titulo": "Alza tus ojos y mira",
+    "ids": ['1L2u7uG7d9zAAB_OqvZ_-rTh1aBXLJF_n']
+  },
+  {
+    "titulo": "Aquel que nos amo",
+    "ids": ['1p4bsAze1pHeaHlF6W2qWqt3IGf6LBHEA']
+  },
+  {
+    "titulo": "Brama como el ciervo",
+    "ids": ['1YSxfcDRBd3gkS4QFUBNOWPvt5cLCpPg5']
+  },
+  {
+    "titulo": "Bueno es alabar",
+    "ids": ['1uBkakVgtcvtWgDEpjBla9eWTGE0GiMnc']
+  },
+  {
+    "titulo": "Cambiare Mi Tristeza",
+    "ids": ['1x2MviibDSoUI-KU3hsM-cGuallrsIa8S']
+  },
+  {
+    "titulo": "Cante al Senor (mi Cristo)",
+    "ids": ['1vCUMKiw066zUyPNpj4blWTSuNyFaiD4b']
+  },
+  {
+    "titulo": "Creo en Ti",
+    "ids": ['1bBbV7zAhuO0sxcutY5FPsQNDYVPYxpIJ']
+  },
+  {
+    "titulo": "Cuan bello es el Senor 2",
+    "ids": ['1ZBNtChyIOahO9JHsKaRqHBr7ckB1Qugh']
+  },
+  {
+    "titulo": "Cuan bello es el Senor",
+    "ids": ['1ZBNtChyIOahO9JHsKaRqHBr7ckB1Qugh']
+  },
+  {
+    "titulo": "Cuan Grande es Dios (C)",
+    "ids": ['1Pkn4JuTPBqz_RiF-g-ta6CXQ-nXgW2ql']
+  },
+  {
+    "titulo": "Cuan grande es Dios (G)",
+    "ids": ['1Pkn4JuTPBqz_RiF-g-ta6CXQ-nXgW2ql']
+  },
+  {
+    "titulo": "Cuando tu me das la mano",
+    "ids": ['1rO9j4iw1G5Bdsb7UWSjZEq3I6cyoQ0kb']
+  },
+  {
+    "titulo": "De los montes a los valles",
+    "ids": ['1dw-IlbAYvx6t2Uqzf0JP_pgwcx3RsMst']
+  },
+  {
+    "titulo": "De tal manera",
+    "ids": ['1jD70PWGFWTFzBTQ6UiOQgsgYHDJsLGmn']
+  },
+  {
+    "titulo": "Desde el pronto amanecer",
+    "ids": ['1JEsqQJF7INu-y10gLgpD6WyJTvoW-wmc']
+  },
+  {
+    "titulo": "Digno Para Siempre",
+    "ids": ['1KjCaBsV8aVfqibQwkuz_krae_J6VTac2']
+  },
+  {
+    "titulo": "Dios ha sido bueno",
+    "ids": ['1VH21OL-d9vJB7cUNqq6DAubrzy1AyqhF','1Vqi3PlO_mFlHcWQVdZzmMr0jJeu9_5en']
+  },
+  {
+    "titulo": "Dios poderoso",
+    "ids": ['16-rrjF6mxamS2ngmBi4O3Pi5fFEk2zw_']
+  },
+  {
+    "titulo": "Dios supremo eres",
+    "ids": ['1-odpyPMy5HnwRUFfDIpwmGB_r4ACb6Q4']
+  },
+  {
+    "titulo": "El cordero y el leon",
+    "ids": ['1B0KVxEzddLfytNB_akMareUscwoJzrDF']
+  },
+  {
+    "titulo": "El Dios que adoramos (E)",
+    "ids": ['1h9oab7UA2OwfTOwadkNySZkvp4kMrhqk']
+  },
+  {
+    "titulo": "El Dios que adoramos (F)",
+    "ids": ['1h9oab7UA2OwfTOwadkNySZkvp4kMrhqk']
+  },
+  {
+    "titulo": "El es el Rey",
+    "ids": ['1IKNWbFPfDa7Tf0wvzLF5u6zwyWrtlDcD','1nuAc9SoTFlU0glGzXSSY74RMsNN3MHDL']
+  },
+  {
+    "titulo": "El que siembra escasamente",
+    "ids": ['1uijg8uBo2nAcL-C85pacryprBczczioh']
+  },
+  {
+    "titulo": "El Senor te bendiga y te guarde (2)",
+    "ids": ['1tGxxxykevOF9rimILtnGSurUJP1GcDA0']
+  },
+  {
+    "titulo": "El Senor te bendiga y te guarde",
+    "ids": ['1tGxxxykevOF9rimILtnGSurUJP1GcDA0']
+  },
+  {
+    "titulo": "El Vive",
+    "ids": ['14F_cvYz2Sq0kXPkTi_23NAc5VmCAVq8U']
+  },
+  {
+    "titulo": "Empieza En Mi",
+    "ids": ['11oPGCZVykg6zom7a5On_QqPZr1D_F9MJ']
+  },
+  {
+    "titulo": "Eres mi amigo fiel (C)",
+    "ids": ['1uxcNbWBf6g14YwxQRiZii3i8CZVRcEhW']
+  },
+  {
+    "titulo": "Eres mi amigo fiel (D)",
+    "ids": ['1uxcNbWBf6g14YwxQRiZii3i8CZVRcEhW']
+  },
+  {
+    "titulo": "Este es mi deseo",
+    "ids": ['1IOMQV9-6IjXyAGvzgIYveMZ8eKm-8sOn']
+  },
+  {
+    "titulo": "Familia De Dios",
+    "ids": ['1CkXhN_xWYVTi2u8AFg3iscojD9LtlcVY']
+  },
+  {
+    "titulo": "Gracias Senor por esa victoria",
+    "ids": ['1DSVTn1QaZ3vcKHOLU_pHaGS_x74KAMjY']
+  },
+  {
+    "titulo": "Grande y fuerte es El",
+    "ids": ['1WG2idggAT4CU-siuXVspfTT8xOWLsYqL','1Aj8Fb8oASWXo9UroVoERqLI4882Nv1KS']
+  },
+  {
+    "titulo": "Has Aumentado",
+    "ids": ['1gvVHXd8YZL2LwORl27N2u0r5RGi3kXqv']
+  },
+  {
+    "titulo": "Hay Libertad",
+    "ids": ['1NNbc18UD4czatJVkFZBIEo-egRIe8_vM','1PTsUlLrV3UgDtY3GpncXzm0NfAFlaRL9']
+  },
+  {
+    "titulo": "Heme Aqui",
+    "ids": ['1sTYl6N1v2dBjkfFj0Xx2zlUzvmYdk79m']
+  },
+  {
+    "titulo": "Hermano te damos la bienvenida",
+    "ids": ['152rBNPwpsb4Qa-ztYZ2n_-1AdJTplNFE']
+  },
+  {
+    "titulo": "Id y predicad (A)",
+    "ids": ['1-ClZis3WQ6TR1itBy2ehTrvlMJSFEQ2c']
+  },
+  {
+    "titulo": "Id y predicad",
+    "ids": ['1-ClZis3WQ6TR1itBy2ehTrvlMJSFEQ2c']
+  },
+  {
+    "titulo": "Juntos sintiendo lo mismo",
+    "ids": ['1xr6loXbbeKTcrcfMud0nDU0de_4tpC8T']
+  },
+  {
+    "titulo": "La Ley de Jehova es perfecta (Salmo 19)",
+    "ids": ['1fPrPE7eOGwZJD9Tr8GowpzWyjw40pcqi','1in9KsqQzy5ypTKgPwPW8_fm27R3jeeci']
+  },
+  {
+    "titulo": "La unica razon (Am)",
+    "ids": ['1i5Oaz-WzAX7zYNmAD7yxDSaTRWq8hTKa','1AwsnOZ2mg_5E6FOkwUbpTPOdfhE8aCJN']
+  },
+  {
+    "titulo": "La unica razon (Bm)",
+    "ids": ['1i5Oaz-WzAX7zYNmAD7yxDSaTRWq8hTKa','1AwsnOZ2mg_5E6FOkwUbpTPOdfhE8aCJN']
+  },
+  {
+    "titulo": "Las naciones cantaran",
+    "ids": ['1CjOC8_ttUeG27xoIAaLA1id6ZR6m0YYf']
+  },
+  {
+    "titulo": "Levantate, resplandece",
+    "ids": ['17RRU362UI4HPer_VZ6oHqWuuQhp_Zo0c']
+  },
+  {
+    "titulo": "Medley 2",
+    "ids": ['1O8S-zW9XWwjKZvhIKEhyMeTlJSBDFjwx','1ZxEkqyb4Ok0iRlZTLucAbuY_EdDCsn-Q']
+  },
+  {
+    "titulo": "MEDLEY",
+    "ids": ['1ztGIH4XEmeUlv3osERRMPBzESPDAulOV']
+  },
+  {
+    "titulo": "Mi corazon late por ti",
+    "ids": ['1o3iFaWuwtnAGgjNA9RbRsMtDL2B2itJY']
+  },
+  {
+    "titulo": "Mi Roca",
+    "ids": ['1tiw5JzT4IruAWUWzmgoaI3nAssRmmZoe']
+  },
+  {
+    "titulo": "Mirad cuan bueno y cuan delicioso es",
+    "ids": ['1YR-cuy2YTkhUp_JIGcBzxGQ1N3pywkjR']
+  },
+  {
+    "titulo": "No hay imposible para Dios 2",
+    "ids": ['1bvKKTEmBi_D05yFGsE9pkaj51witJ7ct','1DTMsPRuUStXKBvcOXeZMkVzsaRM3ECpU']
+  },
+  {
+    "titulo": "No hay imposible para Dios",
+    "ids": ['1bvKKTEmBi_D05yFGsE9pkaj51witJ7ct','1DTMsPRuUStXKBvcOXeZMkVzsaRM3ECpU']
+  },
+  {
+    "titulo": "Nombre sobre todo",
+    "ids": ['1X-yRgbgz8LwCvhXu1htLNaSfMEqhk44H']
+  },
+  {
+    "titulo": "Oh mi Dios es real",
+    "ids": ['1LAZgqsvOtufO5yYDiXIkiM6tEReiyfro']
+  },
+  {
+    "titulo": "Pon aceite en mi vida Senor",
+    "ids": ['1dn6r4eGMHCy-OFwZ-Rw0KAUrm0kwp0Tt']
+  },
+  {
+    "titulo": "Porque tu eres el gozo de mi corazon",
+    "ids": ['1RhBYLj_G-rVEZ_NvP1FRffrZ-IRmVCCG']
+  },
+  {
+    "titulo": "Proclamemos",
+    "ids": ['1XknyOiFIqzJolvA2dbxJXmVmeMMZ-SuW']
+  },
+  {
+    "titulo": "Puedo confiar en el Senor",
+    "ids": ['1CVmEXSWPJMcJrVO5sxgq0cdv-mpRbznj']
+  },
+  {
+    "titulo": "Revelacion",
+    "ids": ['1TX4np9Lqn8bLQueO52SG6-lGoH0TrUe_']
+  },
+  {
+    "titulo": "Santo Por Siempre",
+    "ids": ['1ECVkyXcIapHFQeZ6Bn7OBiQOJgOshBNC']
+  },
+  {
+    "titulo": "Se exalta nuestro Dios (C)",
+    "ids": ['1Df6pgzEaEcjdmBjoy7qqdZx7hsyeEf5l']
+  },
+  {
+    "titulo": "Se exalta nuestro Dios",
+    "ids": ['1Df6pgzEaEcjdmBjoy7qqdZx7hsyeEf5l']
+  },
+  {
+    "titulo": "Senor Eres Fiel",
+    "ids": ['1SeiGdl7o1LGI7rpVL9VRjXB51OMQERuE']
+  },
+  {
+    "titulo": "Somos el pueblo de Dios (D)",
+    "ids": ['1c573iIpzxx8SHSDL-nSKbU7k4XwEtZGk']
+  },
+  {
+    "titulo": "Somos el pueblo de Dios (G)",
+    "ids": ['1c573iIpzxx8SHSDL-nSKbU7k4XwEtZGk']
+  },
+  {
+    "titulo": "Te alabare (Eres Tu) (C)",
+    "ids": ['1YDpHLW4zwULm98fGKI_ikVqg8T5QXK4V']
+  },
+  {
+    "titulo": "Te alabare (Eres Tu) (D)",
+    "ids": ['1YDpHLW4zwULm98fGKI_ikVqg8T5QXK4V']
+  },
+  {
+    "titulo": "Te alabare (Eres Tu) (E)",
+    "ids": ['1YDpHLW4zwULm98fGKI_ikVqg8T5QXK4V']
+  },
+  {
+    "titulo": "Te Dare Lo Mejor",
+    "ids": ['1cvVtuG2l74-Xg5H5EcAys8uZdhSKfp8x']
+  },
+  {
+    "titulo": "Te doy gloria",
+    "ids": ['1kaGkeWCjdSBhCEiecDiQo_2_vSRpJ4ir']
+  },
+  {
+    "titulo": "Te Vengo A Decir",
+    "ids": ['1PM0zBc7CePzXpvoguwACnsVkX-8uCD14']
+  },
+  {
+    "titulo": "Tengo mis manos llenas de bendiciones",
+    "ids": ['1WiED9TWWX60BFGXE0xuElWf-3V7PM4_E']
+  },
+  {
+    "titulo": "Tu eres Santo",
+    "ids": ['18O6AJKNC-YdGmjh5NhYcwt6029Xb7cCg']
+  },
+  {
+    "titulo": "Tu fidelidad 2",
+    "ids": ['1QonuvQ0pFonUOx2wx9ZGo3cwUaheKgIx']
+  },
+  {
+    "titulo": "Tu fidelidad",
+    "ids": ['1QonuvQ0pFonUOx2wx9ZGo3cwUaheKgIx']
+  },
+  {
+    "titulo": "Un Siervo Para Tu Gloria",
+    "ids": ['18KxEBCr_37gETlP0MHFxn25eTLZGvTCy','18KxEBCr_37gETlP0MHFxn25eTLZGvTCy']
+  },
+  {
+    "titulo": "Unidos",
+    "ids": ['1Dsjo2d0sy0GHkTjY3-og1nA9gQKKgtaR']
+  },
+  {
+    "titulo": "Vamos a cantar 2",
+    "ids": ['1plgSt93avVRQM-B7Rh6vd6Tu6fiiGsBW']
+  },
+  {
+    "titulo": "Vamos a cantar",
+    "ids": ['1plgSt93avVRQM-B7Rh6vd6Tu6fiiGsBW']
+  },
+  {
+    "titulo": "Ven",
+    "ids": ['1z6yRHRsvzCN7LHr64ggqV8B3JAzSBWMS','1JqJD2bOpJts_dvbQH1xo0NpB9FBhTVQR']
+  },
+  {
+    "titulo": "Vengo a adorar a Dios 2",
+    "ids": ['1VD7Ibc7lLlAh6cMfpKsRwAB9MlrqTDlm']
+  },
+  {
+    "titulo": "Vengo a adorar a Dios",
+    "ids": ['1VD7Ibc7lLlAh6cMfpKsRwAB9MlrqTDlm']
+  },
+  {
+    "titulo": "Y si vivimos 2",
+    "ids": ['1jnZKKH74Jk0vHpOyRhJQv2GmOv-cqWgH']
+  },
+  {
+    "titulo": "Y si vivimos",
+    "ids": ['1jnZKKH74Jk0vHpOyRhJQv2GmOv-cqWgH']
+  }
+];
   let alabanzas = JSON.parse(localStorage.getItem("alabanzas") || "[]");
   let seleccionadas = JSON.parse(localStorage.getItem("seleccionadas") || "[]");
   let alabanzaActual = null;
   let semitonoOffset = 0;
-
+  console.log(alabanzas)
+  /*alabanzas.forEach(c=>{
+    let aux = jsonLinks.find(a=>c.titulo==a.titulo);
+    if(aux){
+    c['grabaciones']=aux.ids;
+    }
+  })
+  console.log(alabanzas)
+  localStorage.setItem("alabanzas", JSON.stringify(alabanzas));*/
   const notas = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
   const bemoles = {"Db":"C#","Eb":"D#","Gb":"F#","Ab":"G#","Bb":"A#"};
   const songList = document.getElementById("songList");
@@ -326,12 +2197,45 @@
   function mostrarAlabanza(index) {
     alabanzaActual = { tipo: "todas", index };
     semitonoOffset = 0;
+    document.getElementById('grabaciones').innerHTML='';
+    if(alabanzas[index].grabaciones){
+      console.log(alabanzas[index].grabaciones)
+      let ifr='';
+      alabanzas[index].grabaciones.forEach(g=>{
+        ifr+=`<iframe 
+          src="https://drive.google.com/file/d/${g}/preview"
+          width="350"
+          height="80"
+          allow="autoplay">
+        </iframe>
+        `;
+      })
+      document.getElementById('grabaciones').innerHTML=ifr;
+       console.log(ifr)
+    }
+   
     renderAlabanza(alabanzas[index].contenido);
   }
 
   function mostrarSeleccionada(index) {
     alabanzaActual = { tipo: "seleccionadas", index };
     semitonoOffset = 0;
+    document.getElementById('grabaciones').innerHTML='';
+    if(seleccionadas[index].grabaciones){
+      console.log(seleccionadas[index].grabaciones)
+      let ifr='';
+      seleccionadas[index].grabaciones.forEach(g=>{
+        ifr+=`<iframe 
+          src="https://drive.google.com/file/d/${g}/preview"
+          width="350"
+          height="80"
+          allow="autoplay">
+        </iframe>
+        `;
+      })
+      document.getElementById('grabaciones').innerHTML=ifr;
+       console.log(ifr)
+    }
     renderAlabanza(seleccionadas[index].contenido);
   }
 
@@ -340,7 +2244,6 @@
     const artista = (contenido.match(/{artist:\s*(.+)}/i) || [])[1] || "";
     const tonoOriginal = (contenido.match(/{key:\s*([A-G][#b]?)/i) || [])[1] || "";
     const tonoTranspuesto = tonoOriginal ? transponerNota(tonoOriginal, semitonoOffset) : "";
-
     document.getElementById("songTitle").textContent = titulo;
     document.getElementById("songMeta").innerHTML = `
       ${artista ? artista + " — " : ""} 
@@ -474,13 +2377,17 @@
   function guardarAlabanza() {
     const titulo = document.getElementById("editTitle").value.trim();
     const contenido = document.getElementById("editContent").value.trim();
+    const inputGrabaciones = document.getElementById('idsgrabaciones').value.trim();
     if (!titulo || !contenido) return alert("Debe ingresar título y contenido.");
-
+    let grabaciones=[];
+    if(inputGrabaciones!=""){
+      grabaciones = inputGrabaciones.replace(" ","").split(",");
+    }
     if (alabanzaActual === null)
-      alabanzas.push({titulo, contenido});
+      alabanzas.push({titulo, contenido,grabaciones});
     else {
       const lista = alabanzaActual.tipo === "seleccionadas" ? seleccionadas : alabanzas;
-      lista[alabanzaActual.index] = {titulo, contenido};
+      lista[alabanzaActual.index] = {titulo, contenido,grabaciones};
     }
 
     localStorage.setItem("alabanzas", JSON.stringify(alabanzas));
