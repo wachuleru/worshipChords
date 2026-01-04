@@ -194,7 +194,7 @@
               </button>
             </h2>
             <div id="collapseChords" class="accordion-collapse collapse" data-bs-parent="#viewChords">
-              <div class="accordion-body" id="chordList">
+              <div class="accordion-body" id="chordList" style="max-height: 300px; overflow: auto;">
               </div>
             </div>
           </div>
@@ -2268,8 +2268,8 @@
       const acorde = match[1].trim();
       setAcordes.add(acorde);
     }
-    console.log('lista acordes',setAcordes)
-    jtab.render($('#chordList'),[...setAcordes].join(' '));
+    console.log('lista acordes',[...setAcordes].join(' \n'))
+    jtab.render($('#chordList'),[...setAcordes].join(' \n'));
     const collapseElement = document.getElementById('collapseChords');
 
     // Crear la instancia de Bootstrap Collapse
